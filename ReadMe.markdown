@@ -50,7 +50,6 @@ This project implements an end-to-end MLOps pipeline for detecting pneumonia fro
 ## Prerequisites
 - **GitHub Account** with a repository containing this project.
 - **GitHub Secrets** configured:
-  - `KAGGLE_USERNAME` and `KAGGLE_KEY` (for automatic dataset download)
   - `NGROK_AUTH_TOKEN`
   - `GITHUB_TOKEN`
 - **Kaggle Account** to access the [Chest X-Ray Images (Pneumonia)](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia) dataset.
@@ -68,6 +67,10 @@ This project implements an end-to-end MLOps pipeline for detecting pneumonia fro
    - In your GitHub repository, go to `Settings` > `Secrets and variables` > `Actions`, then add:
      - `NGROK_AUTH_TOKEN`
      - `GITHUB_TOKEN`
+
+3. **Download the Dataset**:
+   - Download the [Chest X-Ray Images (Pneumonia)](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia) dataset from Kaggle.
+   - Place the dataset in the chest_xray/ directory
 
 3. **Trigger the CI/CD Pipeline**:
    - Push to the `main` branch or manually run the workflow via the GitHub Actions interface.
