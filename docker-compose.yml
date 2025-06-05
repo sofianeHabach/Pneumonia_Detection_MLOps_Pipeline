@@ -1,22 +1,67 @@
 version: '3.8'
 
 services:
+  # Backend FastAPI
   fastapi:
     build:
       context: .
       dockerfile: Dockerfile.fastapi
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - app-network
 
+  # MLflow
   mlflow:
     build:
       context: .
       dockerfile: Dockerfile.mlflow
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     volumes:
       - ./mlruns:/mlflow/mlruns
       - ./outputs:/artifacts/outputs
     environment:
       MLFLOW_TRACKING_URI: http://localhost:5000
       MLFLOW_ARTIFACT_ROOT: /artifacts
+    networks:
+      - app-network
+    
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    expose:
+      - "80"
+    networks:
+      - app-network
+    depends_on:
+      - fastapi
+      - mlflow
+
+  # Nginx Reverse Proxy
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - fastapi
+      - mlflow
+      - frontend
+    
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  logs:
+  mlruns:
+  outputs:
